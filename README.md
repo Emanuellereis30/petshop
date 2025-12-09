@@ -19,7 +19,8 @@ JavaScript — Interatividade e validações
 
 MySQL / SQL — Banco de dados e consultas
 
- Funcionalidades
+
+Funcionalidades
 
 ✔️ Listagem de produtos
 
