@@ -11,7 +11,7 @@ Tecnologias Utilizadas
 
 PHP — Back-end, regras de negócio e conexão com o banco
 
-HTML5 — Estrutura do conteúdo
+HTML — Estrutura do conteúdo
 
 CSS3 — Estilização e layout
 
