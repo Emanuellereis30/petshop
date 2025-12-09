@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acompanhamento de Pedidos - Petshop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+    <style>
+        body {
+            background: var(--bg-light);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: var(--white);
+            box-shadow: 0 2px 20px rgba(147, 112, 219, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .pedidos-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px 4rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .filters {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 12px rgba(147, 112, 219, 0.1);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .pedidos-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .pedido-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 12px rgba(147, 112, 219, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .pedido-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+
+        .pedido-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .pedido-info h3 {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .pedido-info p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin: 0.25rem 0;
+        }
+
+        .pedido-status {
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .status-pendente {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-processando {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .status-enviado {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-entregue {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-cancelado {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .pedido-detalhes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detalhe-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .detalhe-item label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .detalhe-item span {
+            font-size: 1rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .pedido-produtos {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .pedido-produtos h4 {
+            color: var(--text-dark);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .produto-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .produto-item-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .produto-item-info span:first-child {
+            font-size: 1.5rem;
+        }
+
+        .pedido-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .pedido-total h3 {
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .pedido-total span {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .pedido-acoes {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-acao {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-rastrear {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-rastrear:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-cancelar {
+            background: #ff4444;
+            color: var(--white);
+        }
+
+        .btn-cancelar:hover {
+            background: #cc0000;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+            background: var(--white);
+            border-radius: 12px;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--primary-light);
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .pedido-header {
+                flex-direction: column;
+            }
+
+            .pedido-detalhes {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema" title="Alternar modo escuro">
+        <i class="fas fa-moon"></i>
+    </button>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-paw"></i>
+                <h1>Petshop</h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="pedidos.html">Pedidos</a></li>
+                    <li><a href="listagem-produtos.html">Produtos</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="pedidos-container">
+        <div class="page-header">
+            <h1>Acompanhamento de Pedidos</h1>
+            <p>Visualize e acompanhe o status dos seus pedidos</p>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label for="searchPedido">Buscar Pedido</label>
+                <input type="text" id="searchPedido" placeholder="Número do pedido...">
+            </div>
+            <div class="filter-group">
+                <label for="statusFilter">Status</label>
+                <select id="statusFilter">
+                    <option value="">Todos</option>
+                    <option value="pendente">Pendente</option>
+                    <option value="processando">Processando</option>
+                    <option value="enviado">Enviado</option>
+                    <option value="entregue">Entregue</option>
+                    <option value="cancelado">Cancelado</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="pedidos-grid" id="pedidosGrid">
+            <!-- Pedidos serão inseridos via JavaScript -->
+        </div>
+    </div>
+
+    <script src="theme.js"></script>
+    <script>
+        let pedidos = [];
+        let pedidosFiltrados = [];
+
+        async function carregarPedidos() {
+            // Verificar se há usuário logado
+            const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+            
+            if (!loggedUser || !loggedUser.id) {
+                pedidos = [];
+                pedidosFiltrados = [];
+                renderizarPedidos();
+                return;
+            }
+
+            // Nota: Implementar listar_pedidos.php para buscar pedidos do banco
+            // Por enquanto, usar localStorage como fallback
+            const pedidosLocal = JSON.parse(localStorage.getItem('pedidos')) || [];
+            
+            if (pedidosLocal.length === 0) {
+                pedidos = [];
+            } else {
+                // Filtrar apenas pedidos do usuário logado
+                pedidos = pedidosLocal.filter(p => p.usuario_id === loggedUser.id);
+            }
+
+            pedidosFiltrados = pedidos;
+            renderizarPedidos();
+        }
+
+        function renderizarPedidos() {
+            const grid = document.getElementById('pedidosGrid');
+
+            if (pedidosFiltrados.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-shopping-bag"></i>
+                        <h3>Nenhum pedido encontrado</h3>
+                        <p>Você ainda não possui pedidos ou não há pedidos com os filtros selecionados</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = pedidosFiltrados.map(pedido => {
+                const statusClasses = {
+                    'pendente': 'status-pendente',
+                    'processando': 'status-processando',
+                    'enviado': 'status-enviado',
+                    'entregue': 'status-entregue',
+                    'cancelado': 'status-cancelado'
+                };
+
+                const statusText = {
+                    'pendente': 'Pendente',
+                    'processando': 'Processando',
+                    'enviado': 'Enviado',
+                    'entregue': 'Entregue',
+                    'cancelado': 'Cancelado'
+                };
+
+                const dataFormatada = new Date(pedido.data).toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const produtosHTML = pedido.produtos.map(produto => `
+                    <div class="produto-item">
+                        <div class="produto-item-info">
+                            <span>${produto.imagem || '📦'}</span>
+                            <div>
+                                <div style="font-weight: 600;">${produto.nome}</div>
+                                <div style="font-size: 0.85rem; color: var(--text-light);">
+                                    Qtd: ${produto.quantidade} x R$ ${produto.preco.toFixed(2).replace('.', ',')}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="font-weight: 600; color: var(--primary-color);">
+                            R$ ${(produto.preco * produto.quantidade).toFixed(2).replace('.', ',')}
+                        </div>
+                    </div>
+                `).join('');
+
+                return `
+                    <div class="pedido-card">
+                        <div class="pedido-header">
+                            <div class="pedido-info">
+                                <h3>${pedido.numero}</h3>
+                                <p><i class="fas fa-calendar"></i> ${dataFormatada}</p>
+                                <p><i class="fas fa-map-marker-alt"></i> ${pedido.endereco}</p>
+                            </div>
+                            <span class="pedido-status ${statusClasses[pedido.status]}">
+                                ${statusText[pedido.status]}
+                            </span>
+                        </div>
+
+                        <div class="pedido-detalhes">
+                            <div class="detalhe-item">
+                                <label>Número do Pedido</label>
+                                <span>${pedido.numero}</span>
+                            </div>
+                            <div class="detalhe-item">
+                                <label>Data</label>
+                                <span>${dataFormatada}</span>
+                            </div>
+                            <div class="detalhe-item">
+                                <label>Status</label>
+                                <span>${statusText[pedido.status]}</span>
+                            </div>
+                        </div>
+
+                        <div class="pedido-produtos">
+                            <h4>Produtos</h4>
+                            ${produtosHTML}
+                        </div>
+
+                        <div class="pedido-total">
+                            <h3>Total do Pedido</h3>
+                            <span>R$ ${pedido.total.toFixed(2).replace('.', ',')}</span>
+                        </div>
+
+                        <div class="pedido-acoes">
+                            ${pedido.status !== 'entregue' && pedido.status !== 'cancelado' ? `
+                                <button class="btn-acao btn-rastrear" onclick="rastrearPedido('${pedido.numero}')">
+                                    <i class="fas fa-truck"></i> Rastrear Pedido
+                                </button>
+                            ` : ''}
+                            ${pedido.status === 'pendente' || pedido.status === 'processando' ? `
+                                <button class="btn-acao btn-cancelar" onclick="cancelarPedido(${pedido.id})">
+                                    <i class="fas fa-times"></i> Cancelar Pedido
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function aplicarFiltros() {
+            const search = document.getElementById('searchPedido').value.toLowerCase();
+            const status = document.getElementById('statusFilter').value;
+
+            pedidosFiltrados = pedidos.filter(pedido => {
+                const matchSearch = !search || pedido.numero.toLowerCase().includes(search);
+                const matchStatus = !status || pedido.status === status;
+                return matchSearch && matchStatus;
+            });
+
+            renderizarPedidos();
+        }
+
+        function rastrearPedido(numero) {
+            alert(`Rastreamento do pedido ${numero}\n\nStatus: Em trânsito\nPrevisão de entrega: 2-3 dias úteis`);
+        }
+
+        async function cancelarPedido(id) {
+            if (confirm('Tem certeza que deseja cancelar este pedido?')) {
+                // Nota: Implementar atualizar_pedido.php para atualizar status no banco
+                // Por enquanto, atualizar apenas no localStorage
+                pedidos = pedidos.map(p => {
+                    if (p.id === id) {
+                        p.status = 'cancelado';
+                    }
+                    return p;
+                });
+                localStorage.setItem('pedidos', JSON.stringify(pedidos));
+                carregarPedidos();
+                alert('Pedido cancelado com sucesso! (Nota: Implementar atualização no banco de dados)');
+            }
+        }
+
+        document.getElementById('searchPedido').addEventListener('keyup', aplicarFiltros);
+        document.getElementById('statusFilter').addEventListener('change', aplicarFiltros);
+
+        document.addEventListener('DOMContentLoaded', carregarPedidos);
+    </script>
+</body>
+</html>
+

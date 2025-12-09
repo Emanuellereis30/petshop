@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petshop - Produtos e Acessórios para Seu Pet</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema" title="Alternar modo escuro">
+        <i class="fas fa-moon"></i>
+    </button>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-paw"></i>
+                <h1>Petshop</h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#produtos">Produtos</a></li>
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div id="userInfo" style="display: none; margin-right: 1rem;">
+                    <span style="color: var(--primary-color); font-weight: 600; margin-right: 1rem;">
+                        <i class="fas fa-user"></i> <span id="userName"></span>
+                    </span>
+                    <button onclick="logout()" style="background: #ff4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                        <i class="fas fa-sign-out-alt"></i> Sair
+                    </button>
+                </div>
+                <a href="login.html" class="login-btn" id="loginBtn" title="Login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <a href="cadastro.html" class="cadastro-btn" id="cadastroBtn" title="Cadastro">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Cadastro</span>
+                </a>
+                <button class="cart-btn" id="cartBtn" onclick="abrirCarrinho()" type="button">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h2>Cuidado e Amor para Seu Pet</h2>
+            <p>Produtos premium de qualidade para o bem-estar do seu melhor amigo</p>
+            <a href="#produtos" class="btn-primary">Explorar Produtos</a>
+        </div>
+    </section>
+
+    <!-- Produtos Section -->
+    <section class="produtos" id="produtos">
+        <div class="container">
+            <h2 class="section-title">Nossos Produtos</h2>
+            <div class="produtos-grid" id="produtosGrid">
+                <!-- Produtos serão inseridos via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre Section -->
+    <section class="sobre" id="sobre">
+        <div class="container">
+            <div class="sobre-content">
+                <h2 class="section-title">Sobre o Petshop</h2>
+                <p>Somos especialistas em produtos para animais de estimação, oferecendo uma ampla variedade de itens de alta qualidade para cães, gatos e outros pets. Nossa missão é garantir o bem-estar e a felicidade do seu companheiro, com produtos selecionados e atendimento especializado.</p>
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-shipping-fast"></i>
+                        <h3>Entrega Rápida</h3>
+                        <p>Entregamos em todo o Brasil</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Compra Segura</h3>
+                        <p>Seus dados estão protegidos</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-headset"></i>
+                        <h3>Suporte 24/7</h3>
+                        <p>Atendimento sempre disponível</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contato Section -->
+    <section class="contato" id="contato">
+        <div class="container">
+            <h2 class="section-title">Entre em Contato</h2>
+            <div class="contato-content">
+                <form class="contato-form" id="contatoForm">
+                    <input type="text" placeholder="Seu nome" required>
+                    <input type="email" placeholder="Seu e-mail" required>
+                    <textarea placeholder="Sua mensagem" rows="5" required></textarea>
+                    <button type="submit" class="btn-primary">Enviar Mensagem</button>
+                </form>
+                <div class="contato-info">
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Rua Exemplo, 123 - Rio de Janeiro, RJ</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <p>(21) 97501-4758</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>contato@petshop.com.br</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-paw"></i> Petshop</h3>
+                    <p>Seu pet merece o melhor cuidado!</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#produtos">Produtos</a></li>
+                        <li><a href="#sobre">Sobre</a></li>
+                        <li><a href="#contato">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Redes Sociais</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Petshop. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Carrinho Modal -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Carrinho de Compras</h2>
+                <button class="close-btn" id="closeCart" onclick="fecharCarrinho()" type="button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="cartItems"></div>
+                <div class="cart-total">
+                    <h3>Total: <span id="cartTotal">R$ 0,00</span></h3>
+                </div>
+                <div class="payment-section">
+                    <h4>Dados de pagamento</h4>
+                    <form id="paymentForm">
+                        <div class="payment-grid">
+                            <div class="form-group">
+                                <label for="clienteNome">Nome completo</label>
+                                <input type="text" id="clienteNome" name="clienteNome" placeholder="Seu nome completo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="clienteEmail">E-mail</label>
+                                <input type="email" id="clienteEmail" name="clienteEmail" placeholder="seu@email.com" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="clienteEndereco">Endereço completo</label>
+                                <input type="text" id="clienteEndereco" name="clienteEndereco" placeholder="Rua, número, bairro, cidade - Estado" required>
+                            </div>
+                        </div>
+
+                        <div class="payment-methods">
+                            <label class="payment-radio active">
+                                <input type="radio" name="paymentMethod" value="cartao" checked>
+                                <i class="fas fa-credit-card"></i> Cartão de crédito
+                            </label>
+                            <label class="payment-radio">
+                                <input type="radio" name="paymentMethod" value="pix">
+                                <i class="fas fa-qrcode"></i> PIX
+                            </label>
+                        </div>
+
+                        <div class="card-fields active" id="cardFields">
+                            <div class="form-group">
+                                <label for="cardNumber">Número do cartão</label>
+                                <input type="text" id="cardNumber" name="cardNumber" placeholder="0000 0000 0000 0000" inputmode="numeric">
+                            </div>
+                            <div class="form-group">
+                                <label for="cardExpiry">Validade (MM/AA)</label>
+                                <input type="text" id="cardExpiry" name="cardExpiry" placeholder="12/28">
+                            </div>
+                            <div class="form-group">
+                                <label for="cardCvv">CVV</label>
+                                <input type="text" id="cardCvv" name="cardCvv" placeholder="123" inputmode="numeric">
+                            </div>
+                        </div>
+
+                        <div class="pix-fields" id="pixFields">
+                            <div class="pix-placeholder">
+                                <i class="fas fa-qrcode"></i>
+                                <p>Escaneie com seu app bancário ou copie o código abaixo:</p>
+                                <strong id="pixCodeText">PETSHOPPIX-0001-LOVE-PETS</strong>
+                            </div>
+                        </div>
+
+                        <div class="payment-grid">
+                            <div class="form-group full-width">
+                                <label for="orderNotes">Observações adicionais</label>
+                                <textarea id="orderNotes" name="orderNotes" placeholder="Instruções especiais para entrega (opcional)"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="paymentFeedback" class="payment-feedback"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="clearCart">Limpar Carrinho</button>
+                <button class="btn-primary" id="checkoutBtn">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="theme.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

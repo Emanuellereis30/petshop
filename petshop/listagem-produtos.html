@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Produtos - Petshop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+    <style>
+        .header {
+            background: var(--white);
+            box-shadow: 0 2px 20px rgba(147, 112, 219, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .listagem-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px 4rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-add {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-add:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .filters {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 12px rgba(147, 112, 219, 0.1);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn-filter {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            align-self: flex-end;
+        }
+
+        .btn-filter:hover {
+            background: var(--primary-dark);
+        }
+
+        .produtos-table {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(147, 112, 219, 0.1);
+        }
+
+        .table-header {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 50px 2fr 1fr 1fr 1fr 120px 150px;
+            gap: 1rem;
+            font-weight: 600;
+            align-items: center;
+        }
+
+        .table-row {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 50px 2fr 1fr 1fr 1fr 120px 150px;
+            gap: 1rem;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.3s;
+        }
+
+        .table-row:hover {
+            background: var(--bg-light);
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .produto-imagem {
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .produto-nome {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .produto-categoria {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            padding: 0.25rem 0.75rem;
+            background: var(--bg-light);
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .produto-preco {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .produto-estoque {
+            font-weight: 600;
+        }
+
+        .estoque-baixo {
+            color: #ff4444;
+        }
+
+        .estoque-ok {
+            color: #44ff44;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-edit,
+        .btn-delete {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background: var(--primary-light);
+            color: var(--white);
+        }
+
+        .btn-edit:hover {
+            background: var(--primary-color);
+        }
+
+        .btn-delete {
+            background: #ff4444;
+            color: var(--white);
+        }
+
+        .btn-delete:hover {
+            background: #cc0000;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--primary-light);
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+            .table-header,
+            .table-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .table-header {
+                display: none;
+            }
+
+            .table-row {
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                margin-bottom: 1rem;
+                padding: 1rem;
+            }
+
+            .table-row::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema" title="Alternar modo escuro">
+        <i class="fas fa-moon"></i>
+    </button>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-paw"></i>
+                <h1>Petshop</h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="listagem-produtos.html">Produtos</a></li>
+                    <li><a href="cadastro.html">Cadastros</a></li>
+                    <li><a href="pedidos.html">Pedidos</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="listagem-container">
+        <div class="page-header">
+            <h1>Listagem de Produtos</h1>
+            <div class="header-actions">
+                <a href="cadastro.html" class="btn-add">
+                    <i class="fas fa-plus"></i> Novo Produto
+                </a>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label for="search">Buscar</label>
+                <input type="text" id="search" placeholder="Nome do produto...">
+            </div>
+            <div class="filter-group">
+                <label for="categoriaFilter">Categoria</label>
+                <select id="categoriaFilter">
+                    <option value="">Todas</option>
+                    <option value="Alimentação">Alimentação</option>
+                    <option value="Brinquedos">Brinquedos</option>
+                    <option value="Acessórios">Acessórios</option>
+                    <option value="Conforto">Conforto</option>
+                    <option value="Higiene">Higiene</option>
+                    <option value="Medicamentos">Medicamentos</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="estoqueFilter">Estoque</label>
+                <select id="estoqueFilter">
+                    <option value="">Todos</option>
+                    <option value="baixo">Estoque Baixo</option>
+                    <option value="ok">Estoque OK</option>
+                </select>
+            </div>
+            <button class="btn-filter" onclick="aplicarFiltros()">
+                <i class="fas fa-filter"></i> Filtrar
+            </button>
+        </div>
+
+        <div class="produtos-table" id="produtosTable">
+            <!-- Produtos serão inseridos via JavaScript -->
+        </div>
+    </div>
+
+    <script src="theme.js"></script>
+    <script>
+        let produtos = [];
+        let produtosFiltrados = [];
+
+        // Carregar produtos do banco de dados
+        async function carregarProdutos() {
+            try {
+                const response = await fetch('listar_produtos.php');
+                const result = await response.json();
+                
+                if (result.success) {
+                    produtos = result.data;
+                    produtosFiltrados = produtos;
+                    renderizarProdutos();
+                } else {
+                    console.error('Erro ao carregar produtos:', result.message);
+                    produtos = [];
+                    produtosFiltrados = [];
+                    renderizarProdutos();
+                }
+            } catch (error) {
+                console.error('Erro ao carregar produtos:', error);
+                produtos = [];
+                produtosFiltrados = [];
+                renderizarProdutos();
+            }
+        }
+
+        function renderizarProdutos() {
+            const table = document.getElementById('produtosTable');
+            
+            if (produtosFiltrados.length === 0) {
+                table.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-box-open"></i>
+                        <h3>Nenhum produto encontrado</h3>
+                        <p>Tente ajustar os filtros ou adicione um novo produto</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div class="table-header">
+                    <div></div>
+                    <div>Produto</div>
+                    <div>Categoria</div>
+                    <div>Preço</div>
+                    <div>Estoque</div>
+                    <div>Status</div>
+                    <div>Ações</div>
+                </div>
+            `;
+
+            produtosFiltrados.forEach(produto => {
+                const estoqueStatus = produto.estoque !== undefined 
+                    ? (produto.estoque < 10 ? 'estoque-baixo' : 'estoque-ok')
+                    : '';
+                const estoqueTexto = produto.estoque !== undefined ? produto.estoque : 'N/A';
+                const statusTexto = produto.estoque !== undefined 
+                    ? (produto.estoque < 10 ? 'Baixo' : 'OK')
+                    : 'N/A';
+
+                html += `
+                    <div class="table-row" data-label="Produto">
+                        <div class="produto-imagem">${produto.imagem || '📦'}</div>
+                        <div class="produto-nome">${produto.nome}</div>
+                        <div><span class="produto-categoria">${produto.categoria || 'N/A'}</span></div>
+                        <div class="produto-preco">R$ ${produto.preco.toFixed(2).replace('.', ',')}</div>
+                        <div class="produto-estoque ${estoqueStatus}">${estoqueTexto}</div>
+                        <div class="${estoqueStatus}">${statusTexto}</div>
+                        <div class="action-buttons">
+                            <button class="btn-edit" onclick="editarProduto(${produto.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-delete" onclick="deletarProduto(${produto.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            table.innerHTML = html;
+        }
+
+        function aplicarFiltros() {
+            const search = document.getElementById('search').value.toLowerCase();
+            const categoria = document.getElementById('categoriaFilter').value;
+            const estoque = document.getElementById('estoqueFilter').value;
+
+            produtosFiltrados = produtos.filter(produto => {
+                const matchSearch = !search || produto.nome.toLowerCase().includes(search);
+                const matchCategoria = !categoria || produto.categoria === categoria;
+                const matchEstoque = !estoque || 
+                    (estoque === 'baixo' && produto.estoque !== undefined && produto.estoque < 10) ||
+                    (estoque === 'ok' && produto.estoque !== undefined && produto.estoque >= 10);
+
+                return matchSearch && matchCategoria && matchEstoque;
+            });
+
+            renderizarProdutos();
+        }
+
+        function editarProduto(id) {
+            alert(`Editar produto ${id} - Funcionalidade em desenvolvimento`);
+        }
+
+        function deletarProduto(id) {
+            if (confirm('Tem certeza que deseja excluir este produto?')) {
+                // Nota: Implementar deletar_produto.php se necessário
+                // Por enquanto, apenas remove da lista local
+                produtos = produtos.filter(p => p.id !== id);
+                produtosFiltrados = produtosFiltrados.filter(p => p.id !== id);
+                
+                renderizarProdutos();
+                alert('Produto excluído da lista! (Nota: Implementar exclusão no banco de dados)');
+            }
+        }
+
+        // Event listeners
+        document.getElementById('search').addEventListener('keyup', aplicarFiltros);
+        document.getElementById('categoriaFilter').addEventListener('change', aplicarFiltros);
+        document.getElementById('estoqueFilter').addEventListener('change', aplicarFiltros);
+
+        // Carregar produtos ao iniciar
+        document.addEventListener('DOMContentLoaded', () => {
+            carregarProdutos();
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

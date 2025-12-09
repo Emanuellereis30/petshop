@@ -1,0 +1,116 @@
+==============================
+TESTES DE API – AV4 BACK-END
+==============================
+
+---------------------------------------
+1) CADASTRAR USUÁRIO (POST)
+URL: cadastro_usuario.php
+---------------------------------------
+JSON:
+{
+    "nome": "João da Silva",
+    "email": "joao@example.com",
+    "senha": "123456",
+    "tipo": "cliente"
+}
+
+---------------------------------------
+2) CADASTRAR PRODUTO (POST)
+URL: cadastro_produto.php
+---------------------------------------
+JSON:
+{
+    "nome": "Ração Premium",
+    "preco": 59.90,
+    "categoria": "Alimentação",
+    "descricao": "Ração seca para cães adultos",
+    "imagem": "🐶",
+    "estoque": 10
+}
+
+---------------------------------------
+3) CRIAR PEDIDO (POST)
+URL: criar_pedido.php
+---------------------------------------
+JSON:
+{
+    "usuario_id": 1,
+    "endereco_entrega": "Av. Brasil, 1000",
+    "observacoes": "Deixar na portaria",
+    "produtos": [
+        {
+            "produto_id": 1,
+            "quantidade": 2
+        },
+        {
+            "produto_id": 3,
+            "quantidade": 1
+        }
+    ]
+}
+
+---------------------------------------
+4) CRIAR ENTREGA (POST)
+URL: criar_entrega.php
+---------------------------------------
+JSON:
+{
+    "pedido_id": 1,
+    "endereco_entrega": "Av. Brasil, 1000",
+    "observacoes": "Tocar o interfone"
+}
+
+---------------------------------------
+5) LISTAR ENTREGAS DISPONÍVEIS (GET)
+URL:
+listar_entregas.php
+---------------------------------------
+
+---------------------------------------
+6) LISTAR ENTREGAS DE UM ENTREGADOR (GET)
+URL:
+listar_entregas.php?entregador_id=2
+---------------------------------------
+
+---------------------------------------
+7) ACEITAR ENTREGA (POST)
+URL: aceitar_entrega.php
+---------------------------------------
+JSON:
+{
+    "entrega_id": 1,
+    "entregador_id": 2
+}
+
+---------------------------------------
+8) ATUALIZAR STATUS – EM ROTA (POST)
+URL: atualizar_status_entrega.php
+---------------------------------------
+JSON:
+{
+    "entrega_id": 1,
+    "status": "em-rota",
+    "entregador_id": 2
+}
+
+---------------------------------------
+9) ATUALIZAR STATUS – ENTREGUE (POST)
+URL: atualizar_status_entrega.php
+---------------------------------------
+JSON:
+{
+    "entrega_id": 1,
+    "status": "entregue",
+    "entregador_id": 2
+}
+
+---------------------------------------
+10) ATUALIZAR STATUS – CANCELADA (POST)
+URL: atualizar_status_entrega.php
+---------------------------------------
+JSON:
+{
+    "entrega_id": 1,
+    "status": "cancelada",
+    "entregador_id": 2
+}
