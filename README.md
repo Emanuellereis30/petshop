@@ -1,4 +1,4 @@
- 🐾 Pet Shop — Loja Virtual de Produtos
+ 🐾 Pet Shop Loja Virtual de Produtos
 
 Projeto desenvolvido em grupo para a faculdade, com o objetivo de criar um site de vendas de produtos voltados para pets.
 
