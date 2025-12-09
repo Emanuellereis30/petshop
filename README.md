@@ -22,9 +22,15 @@ MySQL / SQL — Banco de dados e consultas
  Funcionalidades
 
 ✔️ Listagem de produtos
+
 ✔️ Visualização de detalhes
+
 ✔️ Carrinho de compras (simples)
+
 ✔️ Sistema de login e cadastro de usuário
+
 ✔️ Painel para cadastrar/editar produtos (admin)
+
 ✔️ Integração com banco de dados
+
 ✔️ Responsividade básica
